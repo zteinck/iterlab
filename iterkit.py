@@ -58,16 +58,8 @@ def iter_get(array, index=0, default=None):
 
 
 def to_iter(x):
-    ''' converts variable to an iterable if it is not already '''
-    if isinstance(x, (list, tuple, dict)):
-        return x
-    if isinstance(x, str):
-        return [x]
-    try:
-        iter(x)
-        return list(x)
-    except:
-        return [x]
+    ''' converts variable to a list '''
+    return x if isinstance(x, (list, tuple)) else [x]
 
 
 
