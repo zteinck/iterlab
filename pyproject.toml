@@ -5,10 +5,11 @@ description = "Collection of helper functions that perform operations on iterabl
 authors = ["Zachary Einck <zacharyeinck@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+repository = "https://github.com/zteinck/iterlab"
+homepage = "https://github.com/zteinck/iterlab"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-
 
 [build-system]
 requires = ["poetry-core"]
