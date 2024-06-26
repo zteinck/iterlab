@@ -2,10 +2,6 @@ import re
 
 
 
-#+---------------------------------------------------------------------------+
-# Freestanding functions
-#+---------------------------------------------------------------------------+
-
 def natural_sort(array, inplace=False):
     '''
     Description
@@ -49,7 +45,8 @@ def natural_sort(array, inplace=False):
 
 def iter_get(array, index=0, default=None):
     ''' extends dictionary's .get() to other iterables such as lists '''
-    if array is None: return
+    if array is None:
+        return default
     try:
         return array[index]
     except IndexError:
@@ -63,10 +60,43 @@ def to_iter(x):
 
 
 
-def delimit_iter(x, typ=str, delimiter=', ', encase=True):
-    x = [str(typ(z)) for z in x]
-    if typ == str and encase: x = ["'%s'" % z for z in x]
-    return delimiter.join(x)
+def delimit_iter(x, func=None, delimiter=', ', quotes='single', encase=True):
+    '''
+    Description
+    ----------
+    Delimits an iterable
+
+    Parameters
+    ----------
+    x : iterable
+        iterable to delimit
+    func : type | func | None
+        formats each element before it is delimited.
+    delimiter : str
+        delimiter
+    quotes : str | None
+        • 'single' ➜ encase each element in single quotes
+        • 'double' ➜ encase each element in double quotes
+        • None ➜ each element is not encased
+    encase : bool
+        if True, the final output is encased in parenthesis
+
+    Returns
+    ----------
+    out : str
+        delimited iterable
+    '''
+    if func is not None:
+        x = list(map(func, x))
+
+    x =  [f'{z}' for z in x]
+
+    if quotes is not None:
+        q = {'single': "'", 'double': '"'}[quotes]
+        x =  [z.join([q] * 2) for z in x]
+
+    x = delimiter.join(x)
+    return f'({x})' if encase else x
 
 
 
@@ -133,11 +163,3 @@ def iter_window(x, left=0, right=0, strict=False, step=False, include_index=Fals
         start = b + 1
         #color.print(str(subset),'o')
         yield (i, subset) if include_index else subset
-
-
-
-
-
-if __name__ == '__main__':
-    for x in iter_window([0,1,3,4], left=1, strict=True, step=True):
-        print('x =', x)
